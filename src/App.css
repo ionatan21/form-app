@@ -1,27 +1,67 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   text-align: center;
 }
 
+body {
+  display: flex;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+}
+
 table {
-border: 1px solid black;
-padding: 5%;
+  width: 100%;
+
 border-radius: 4px;
 }
 
 
+
+.title{
+  text-align: left;
+}
+.inputs{
+  text-align: right;
+}
+td{
+  max-width: 300px;
+  padding: 2px;
+  text-align: left;
+  border: 1px solid  rgb(0, 0, 0);
+
+}
+.header-cell{
+border: 1px solid black;
+}
 .formulario{
-align-items: center;
-padding-right: 50px;
+align-items: center
+
 }
 
-body {
-  display: flex;
-  background-color: #f6f5f7;
-  justify-content: center;
-  align-items: center;
-  font-family: "Poppins", sans-serif;
-  overflow: hidden;
-  height: 100vh;
+.next-comment{
+  text-align: center;
+}
+
+select {
+  display: inline-block;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.email{
+
+  min-width: 250px;
+}
+
+.nombre_funcionario{
+  min-width: 250px;
+
+}
+
+.unidad_academica{
+  min-width: 250px;
 }
