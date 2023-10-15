@@ -1,12 +1,14 @@
 import "./App.css";
 import Form from "./form";
+import Header from "./header";
 //import Login from "./login";
 
 function App() {
   return (
-    <body>
-    <Form/>
-    </body>
+    <>
+      <Header/>
+      <Form />
+    </>
   );
 }
 

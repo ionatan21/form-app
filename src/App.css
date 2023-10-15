@@ -4,64 +4,98 @@
 }
 
 body {
-  display: flex;
   background-color: white;
-  justify-content: center;
   align-items: center;
   font-family: "Poppins", sans-serif;
+  width: 100%;
 }
 
-table {
-  width: 100%;
+.formulario{
+  margin: 25px;
+}
 
+#logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 20px; /* Opcional: añade margen para dejar espacio alrededor del logo */
+}
+
+
+.Main-logo{
+  width: 300px;
+}
+
+.tabla {
+font-size: 12px;
 border-radius: 4px;
 }
 
-
-
-.title{
-  text-align: left;
+.sub-headers{
+  width: 100%;
 }
-.inputs{
-  text-align: right;
+.sub-headers td{
+ text-align: center;
+}
+
+.time-picker{
+  font-size: 75%;
+}
+
+input {
+  height: 20px;
+  font-size: 12px;
 }
 td{
-  max-width: 300px;
+
+  max-height: 20px;
   padding: 2px;
   text-align: left;
-  border: 1px solid  rgb(0, 0, 0);
-
+  border: 1px solid  rgb(233, 19, 19);
+  font-size: 12px;
 }
+
 .header-cell{
 border: 1px solid black;
 }
-.formulario{
-align-items: center
 
+.header-form{
+  width: 100px;
 }
 
 .next-comment{
+  font-size: 17px;
   text-align: center;
 }
 
 select {
   display: inline-block;
+  font-size: 12px;
 }
 
 ::-webkit-scrollbar {
   display: none;
 }
 
-.email{
 
-  min-width: 250px;
+.date{
+  max-width: 100%;
+  font-size: 75%;
 }
 
-.nombre_funcionario{
-  min-width: 250px;
-
+.range{
+  width: 50%;
 }
 
-.unidad_academica{
-  min-width: 250px;
+
+.header-inputs{
+  text-align: left ;
+  width: 200px;
+  padding: 10px;
+  display: inline-flexbox;
+}
+
+#vigencia-head{
+  width: 120px;
+  align-items: center;
 }
