@@ -1,19 +1,29 @@
 #root {
-  margin: 0 auto;
-  text-align: center;
-}
+  margin-left: 25px;
 
+}
+.main-header{
+  text-align: left;
+  margin-left: 5%;
+}
 body {
   background-color: white;
-  align-items: center;
   font-family: "Poppins", sans-serif;
   width: 100%;
 }
 
 .formulario{
-  margin: 25px;
+  margin: 10px;
 }
-
+.main-inputs{
+  text-align: center;
+  align-items: center;
+}
+.jornada-inputs{
+  width: 100%;
+  text-align: center;
+  height: 75%;
+}
 #logo {
   position: absolute;
   top: 0;
@@ -27,11 +37,18 @@ body {
 }
 
 .tabla {
-font-size: 12px;
+font-size: 14px;
 border-radius: 4px;
 }
 
+.tabla2 {
+  font-size: 14px;
+  border-radius: 4px;
+  }
+  
+
 .sub-headers{
+  
   width: 100%;
 }
 .sub-headers td{
@@ -39,48 +56,52 @@ border-radius: 4px;
 }
 
 .time-picker{
-  font-size: 75%;
+  font-size: 14px;
 }
 
 input {
   height: 20px;
-  font-size: 12px;
+  font-size: 14px;
 }
-td{
 
-  max-height: 20px;
-  padding: 2px;
+td{
+  min-width: 100%;
+  max-height: 40px;
+  padding: 5px;
   text-align: left;
-  border: 1px solid  rgb(233, 19, 19);
-  font-size: 12px;
+  border: 1px solid  rgb(0, 0, 0);
+  font-size: 14px;
 }
 
 .header-cell{
-border: 1px solid black;
+  padding: 5px;
+border: 1px solid rgb(0, 0, 0);
+width: 16.6%;
 }
 
-.header-form{
-  width: 100px;
-}
 
 .next-comment{
+  text-align: left;
   font-size: 17px;
-  text-align: center;
 }
 
 select {
   display: inline-block;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 ::-webkit-scrollbar {
   display: none;
 }
 
-
+.date-line{
+  align-items: center;
+  width: 100%;
+}
 .date{
-  max-width: 100%;
-  font-size: 75%;
+  text-align: center;
+  min-width: 100%;
+  font-size: 100%;
 }
 
 .range{
