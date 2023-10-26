@@ -1,21 +1,41 @@
 #root {
-  margin-left: 25px;
-
+  margin-left: 2%;
+  
 }
+th{
+background-color: #BFBFBF;
+}
+
+#nombre_funcionario{
+  text-align: left;
+  
+}
+
+.all-page{
+  width: 90%;
+  align-items: center;
+}
+
 .main-header{
+  position: static;
+  top: 1;
   text-align: left;
   margin-left: 5%;
 }
+
+
 body {
   background-color: white;
   font-family: "Poppins", sans-serif;
-  width: 100%;
+  
 }
 
 .formulario{
-  margin: 10px;
+  margin-left: 1%;
+  width: 90%;
 }
 .main-inputs{
+  border: 1px solid black;
   text-align: center;
   align-items: center;
 }
@@ -28,7 +48,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  margin: 20px; /* Opcional: añade margen para dejar espacio alrededor del logo */
+  padding: 1%;/* Opcional: añade margen para dejar espacio alrededor del logo */
 }
 
 
@@ -56,6 +76,7 @@ border-radius: 4px;
 }
 
 .time-picker{
+  min-width: 105%;
   font-size: 14px;
 }
 
@@ -65,12 +86,15 @@ input {
 }
 
 td{
+  border: 1px;
   min-width: 100%;
   max-height: 40px;
   padding: 5px;
   text-align: left;
-  border: 1px solid  rgb(0, 0, 0);
   font-size: 14px;
+}
+th {
+  border: 1px solid  rgb(0, 0, 0);
 }
 
 .header-cell{
@@ -79,6 +103,9 @@ border: 1px solid rgb(0, 0, 0);
 width: 16.6%;
 }
 
+.separator{
+  border: 1px solid black;
+}
 
 .next-comment{
   text-align: left;
@@ -107,14 +134,25 @@ select {
 .range{
   width: 50%;
 }
-
+.date-picker{
+  border: 1px solid black;
+}
 
 .header-inputs{
-  text-align: left ;
+  text-align: left;
   width: 200px;
-  padding: 10px;
   display: inline-flexbox;
 }
+
+.header-text{
+text-align: right;
+padding-left: 17%;
+}
+
+.header-text2{
+  text-align: right;
+  padding-left: 30%;
+  }
 
 #vigencia-head{
   width: 120px;

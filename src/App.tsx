@@ -6,8 +6,10 @@ import Header from "./header";
 function App() {
   return (
     <>
+    <div className="all-page">
       <Header/>
       <Form />
+      </div>
     </>
   );
 }
