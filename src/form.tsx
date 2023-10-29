@@ -167,9 +167,27 @@ function Form() {
     }
   };
 
+  const [filas, setFilas] = useState([1]); 
+  
+
+  const agregarFila = () => {
+    setFilas([...filas, filas.length + 1]);
+    
+  };
+
+  const eliminarFila = (fila: number) => {
+    if (filas.length === 1) {
+      // No puedes eliminar la última fila
+      return;
+    }
+    const nuevasFilas = filas.filter((f) => f !== fila);
+    setFilas(nuevasFilas);
+  };
+  
+
   return (
     <div className="formulario">
-      <h3 className="declaracion-title">
+      <h3 className="declaracion-title" style={{ color: 'black' }}>
         DECLARACIÓN JURADA DE HORARIO Y JORNADA DE TRABAJO
       </h3>
       <table>
@@ -180,7 +198,7 @@ function Form() {
                 <thead>
                   <tr>
                     <td>
-                      <label id="nombre_funcionario">
+                      <label id="nombre_funcionario" style={{ color: 'black' }}>
                         Nombre del funcionario(a):
                       </label>
                     </td>
@@ -201,7 +219,9 @@ function Form() {
                 <thead>
                   <tr>
                     <td>
-                      <label id="cedula">Cédula:</label>
+                      <label id="cedula" style={{ color: 'black' }}>
+                        Cédula:
+                      </label>
                     </td>
                     <td className="header-text2">
                       <input type="text" id="cedula" name="cedula" required />
@@ -215,7 +235,9 @@ function Form() {
                 <thead>
                   <tr>
                     <td>
-                      <label id="telefono">Número de teléfono:</label>
+                      <label id="telefono" style={{ color: 'black' }}>
+                        Número de teléfono:
+                      </label>
                     </td>
                     <td>
                       <input
@@ -236,7 +258,7 @@ function Form() {
                 <thead>
                   <tr>
                     <td>
-                      <label id="unidad_academica">
+                      <label id="unidad_academica" style={{ color: 'black' }}>
                         Unidad Académica o Administrativa:
                       </label>
                     </td>
@@ -257,7 +279,9 @@ function Form() {
                 <thead>
                   <tr>
                     <td>
-                      <label id="correo_electronico">Correo electrónico:</label>
+                      <label id="correo_electronico" style={{ color: 'black' }}>
+                        Correo electrónico:
+                      </label>
                     </td>
                     <td>
                       <input
@@ -276,15 +300,15 @@ function Form() {
         </tbody>
       </table>
       <br />
-      <h2 className="next-comment">
+      <h2 className="next-comment" style={{ color: 'black' }}>
         A continuación declaro los horarios y jornadas convenidos con:
       </h2>
       <br />
-      <h3>UNIVERSIDAD DE COSTA RICA (sea como docente y/o administrativo)</h3>
+      <h3 style={{ color: 'black' }}>UNIVERSIDAD DE COSTA RICA (sea como docente y/o administrativo)</h3>
       <table className="tabla">
         <thead>
           <tr>
-            <th rowSpan={2} className="header-cell">
+            <th rowSpan={2} className="header-cell" >
               Lugar de Trabajo
             </th>
             <th rowSpan={2} className="header-cell">
@@ -394,7 +418,9 @@ function Form() {
               </table>
             </td>
           </tr>
+         
           <tr>
+
             <th className="header-cell">monday</th>
             <th className="header-cell">tuesday</th>
             <th className="header-cell">Miércoles</th>
@@ -402,510 +428,522 @@ function Form() {
             <th className="header-cell">friday</th>
             <th className="header-cell">Sábado</th>
           </tr>
-          <tr>
-            <td className="separator">
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select
-                        id="monday-mañana-0"
-                        name="monday_de_1"
-                        className="time-picker"
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Desde:
-                        </option>
+           
+              {filas.map((fila) => (
+                <tr key={fila} >
 
-                        {MorningOptions.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        id="monday-mañana-1"
-                        name="monday_de_1"
-                        className="time-picker"
-                        disabled={!enableSecondSelect[1]}
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Hasta:
-                        </option>
-                        {MondayOptionsM.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select
-                        id="monday-tarde-2"
-                        name="monday_de_2"
-                        className="time-picker"
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Desde:
-                        </option>
+                  <td className="separator">
+                    <table>
+                      <thead>
+                        <tr>
+                          <td>
+                            <select
+                              id="monday-mañana-0"
+                              name="monday_de_1"
+                              className="time-picker"
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Desde:
+                              </option>
 
-                        {AfternoonOptions.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        id="monday-mañana-3"
-                        name="monday_de_3"
-                        className="time-picker"
-                        disabled={!enableSecondSelect[3]}
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Hasta:
-                        </option>
-                        {MondayOptionsT.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
+                              {MorningOptions.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              id="monday-mañana-1"
+                              name="monday_de_1"
+                              className="time-picker"
+                              disabled={!enableSecondSelect[1]}
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Hasta:
+                              </option>
+                              {MondayOptionsM.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <select
+                              id="monday-tarde-2"
+                              name="monday_de_2"
+                              className="time-picker"
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Desde:
+                              </option>
 
-            <td className="separator">
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select
-                        id="tuesday-mañana-4"
-                        name="tuesday_de_4"
-                        className="time-picker"
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Desde:
-                        </option>
+                              {AfternoonOptions.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              id="monday-mañana-3"
+                              name="monday_de_3"
+                              className="time-picker"
+                              disabled={!enableSecondSelect[3]}
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Hasta:
+                              </option>
+                              {MondayOptionsT.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        </tr>
+                      </thead>
+                    </table>
+                  </td>
 
-                        {MorningOptions.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        id="tuesday-mañana-5"
-                        name="tuesday_de_5"
-                        className="time-picker"
-                        disabled={!enableSecondSelect[5]}
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Hasta:
-                        </option>
-                        {TuesdayOptionsM.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select
-                        id="tuesday-tarde-6"
-                        name="tuesday_de_6"
-                        className="time-picker"
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Desde:
-                        </option>
+                  <td className="separator">
+                    <table>
+                      <thead>
+                        <tr>
+                          <td>
+                            <select
+                              id="tuesday-mañana-4"
+                              name="tuesday_de_4"
+                              className="time-picker"
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Desde:
+                              </option>
 
-                        {AfternoonOptions.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        id="tuesday-tarde-7"
-                        name="tuesday_de_7"
-                        className="time-picker"
-                        disabled={!enableSecondSelect[7]}
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Hasta:
-                        </option>
-                        {TuesdayOptionsT.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
+                              {MorningOptions.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              id="tuesday-mañana-5"
+                              name="tuesday_de_5"
+                              className="time-picker"
+                              disabled={!enableSecondSelect[5]}
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Hasta:
+                              </option>
+                              {TuesdayOptionsM.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <select
+                              id="tuesday-tarde-6"
+                              name="tuesday_de_6"
+                              className="time-picker"
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Desde:
+                              </option>
 
-            <td className="separator">
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select
-                        id="wednesday-mañana-8"
-                        name="wednesday_de_8"
-                        className="time-picker"
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Desde:
-                        </option>
+                              {AfternoonOptions.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              id="tuesday-tarde-7"
+                              name="tuesday_de_7"
+                              className="time-picker"
+                              disabled={!enableSecondSelect[7]}
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Hasta:
+                              </option>
+                              {TuesdayOptionsT.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        </tr>
+                      </thead>
+                    </table>
+                  </td>
 
-                        {MorningOptions.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        id="wednesday-mañana-9"
-                        name="wednesday_de_9"
-                        className="time-picker"
-                        disabled={!enableSecondSelect[9]}
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Hasta:
-                        </option>
-                        {WednesdayOptionsM.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select
-                        id="wednesday-tarde-10"
-                        name="wednesday_de_10"
-                        className="time-picker"
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Desde:
-                        </option>
+                  <td className="separator">
+                    <table>
+                      <thead>
+                        <tr>
+                          <td>
+                            <select
+                              id="wednesday-mañana-8"
+                              name="wednesday_de_8"
+                              className="time-picker"
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Desde:
+                              </option>
 
-                        {AfternoonOptions.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        id="wednesday-tarde-11"
-                        name="wednesday_de_11"
-                        className="time-picker"
-                        disabled={!enableSecondSelect[11]}
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Hasta:
-                        </option>
-                        {WednesdayOptionsT.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
+                              {MorningOptions.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              id="wednesday-mañana-9"
+                              name="wednesday_de_9"
+                              className="time-picker"
+                              disabled={!enableSecondSelect[9]}
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Hasta:
+                              </option>
+                              {WednesdayOptionsM.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <select
+                              id="wednesday-tarde-10"
+                              name="wednesday_de_10"
+                              className="time-picker"
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Desde:
+                              </option>
 
-            <td className="separator">
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select
-                        id="thursday-mañana-12"
-                        name="thursday_de_12"
-                        className="time-picker"
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Desde:
-                        </option>
+                              {AfternoonOptions.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              id="wednesday-tarde-11"
+                              name="wednesday_de_11"
+                              className="time-picker"
+                              disabled={!enableSecondSelect[11]}
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Hasta:
+                              </option>
+                              {WednesdayOptionsT.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        </tr>
+                      </thead>
+                    </table>
+                  </td>
 
-                        {MorningOptions.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        id="thursday-mañana-13"
-                        name="thursday_de_13"
-                        className="time-picker"
-                        disabled={!enableSecondSelect[13]}
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Hasta:
-                        </option>
-                        {ThursdayOptionsM.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select
-                        id="thursday-tarde-14"
-                        name="thursday_de_14"
-                        className="time-picker"
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Desde:
-                        </option>
+                  <td className="separator">
+                    <table>
+                      <thead>
+                        <tr>
+                          <td>
+                            <select
+                              id="thursday-mañana-12"
+                              name="thursday_de_12"
+                              className="time-picker"
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Desde:
+                              </option>
 
-                        {AfternoonOptions.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        id="thursday-tarde-15"
-                        name="thursday_de_15"
-                        className="time-picker"
-                        disabled={!enableSecondSelect[15]}
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Hasta:
-                        </option>
-                        {ThursdayOptionsT.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
+                              {MorningOptions.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              id="thursday-mañana-13"
+                              name="thursday_de_13"
+                              className="time-picker"
+                              disabled={!enableSecondSelect[13]}
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Hasta:
+                              </option>
+                              {ThursdayOptionsM.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <select
+                              id="thursday-tarde-14"
+                              name="thursday_de_14"
+                              className="time-picker"
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Desde:
+                              </option>
 
-            <td className="separator">
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select
-                        id="friday-mañana-16"
-                        name="friday_de_16"
-                        className="time-picker"
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Desde:
-                        </option>
+                              {AfternoonOptions.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              id="thursday-tarde-15"
+                              name="thursday_de_15"
+                              className="time-picker"
+                              disabled={!enableSecondSelect[15]}
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Hasta:
+                              </option>
+                              {ThursdayOptionsT.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        </tr>
+                      </thead>
+                    </table>
+                  </td>
 
-                        {MorningOptions.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        id="friday-mañana-17"
-                        name="friday_de_17"
-                        className="time-picker"
-                        disabled={!enableSecondSelect[17]}
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Hasta:
-                        </option>
-                        {FridayOptionsM.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select
-                        id="friday-tarde-18"
-                        name="friday_de_18"
-                        className="time-picker"
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Desde:
-                        </option>
+                  <td className="separator">
+                    <table>
+                      <thead>
+                        <tr>
+                          <td>
+                            <select
+                              id="friday-mañana-16"
+                              name="friday_de_16"
+                              className="time-picker"
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Desde:
+                              </option>
 
-                        {AfternoonOptions.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        id="friday-tarde-19"
-                        name="friday_de_19"
-                        className="time-picker"
-                        disabled={!enableSecondSelect[19]}
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Hasta:
-                        </option>
-                        {FridayOptionsT.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
+                              {MorningOptions.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              id="friday-mañana-17"
+                              name="friday_de_17"
+                              className="time-picker"
+                              disabled={!enableSecondSelect[17]}
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Hasta:
+                              </option>
+                              {FridayOptionsM.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <select
+                              id="friday-tarde-18"
+                              name="friday_de_18"
+                              className="time-picker"
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Desde:
+                              </option>
 
-            <td className="separator">
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select
-                        id="saturday-mañana-20"
-                        name="saturday_de_20"
-                        className="time-picker"
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Desde:
-                        </option>
+                              {AfternoonOptions.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              id="friday-tarde-19"
+                              name="friday_de_19"
+                              className="time-picker"
+                              disabled={!enableSecondSelect[19]}
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Hasta:
+                              </option>
+                              {FridayOptionsT.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        </tr>
+                      </thead>
+                    </table>
+                  </td>
 
-                        {MorningOptions.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        id="saturday-mañana-21"
-                        name="saturday_de_21"
-                        className="time-picker"
-                        disabled={!enableSecondSelect[21]}
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Hasta:
-                        </option>
-                        {SaturdayOptionsM.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select
-                        id="saturday-tarde-22"
-                        name="saturday_de_22"
-                        className="time-picker"
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Desde:
-                        </option>
+                  <td className="separator">
+                    <table>
+                      <thead>
+                        <tr>
+                          <td>
+                            <select
+                              id="saturday-mañana-20"
+                              name="saturday_de_20"
+                              className="time-picker"
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Desde:
+                              </option>
 
-                        {AfternoonOptions.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        id="saturday-tarde-23"
-                        name="saturday_de_23"
-                        className="time-picker"
-                        disabled={!enableSecondSelect[23]}
-                        onChange={handleHoraChange}
-                      >
-                        <option disabled selected>
-                          Hasta:
-                        </option>
-                        {SaturdayOptionsT.map((opcion) => (
-                          <option key={opcion.value} value={opcion.value}>
-                            {opcion.label}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-          </tr>
+                              {MorningOptions.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              id="saturday-mañana-21"
+                              name="saturday_de_21"
+                              className="time-picker"
+                              disabled={!enableSecondSelect[21]}
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Hasta:
+                              </option>
+                              {SaturdayOptionsM.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <select
+                              id="saturday-tarde-22"
+                              name="saturday_de_22"
+                              className="time-picker"
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Desde:
+                              </option>
+
+                              {AfternoonOptions.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              id="saturday-tarde-23"
+                              name="saturday_de_23"
+                              className="time-picker"
+                              disabled={!enableSecondSelect[23]}
+                              onChange={handleHoraChange}
+                            >
+                              <option disabled selected>
+                                Hasta:
+                              </option>
+                              {SaturdayOptionsT.map((opcion) => (
+                                <option key={opcion.value} value={opcion.value}>
+                                  {opcion.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        </tr>
+                      </thead>
+                    </table>
+                  </td>
+                  <button onClick={() => eliminarFila(fila)}>Eliminar</button>
+                </tr>
+                
+              ))}
+            
+          
+          <button onClick={agregarFila}>Agregar Fila</button>
+          
         </thead>
+
+
         <tbody></tbody>
       </table>
       <br />
-      <h3>OTRAS INSTITUCIONES PÚBLICAS, PRIVADAS Y FUNDACIONES</h3>
+      <h3 style={{ color: 'black' }}>OTRAS INSTITUCIONES PÚBLICAS, PRIVADAS Y FUNDACIONES</h3>
       <table className="tabla2">
         <thead>
           <tr>
