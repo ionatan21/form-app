@@ -165,14 +165,16 @@ function Form() {
 
       setenableSecondSelect(NuevoSelect);
     }
+
+
   };
 
-  const [filas, setFilas] = useState([1]); 
-  
+  const [filas, setFilas] = useState([1]);
+
 
   const agregarFila = () => {
     setFilas([...filas, filas.length + 1]);
-    
+
   };
 
   const eliminarFila = (fila: number) => {
@@ -183,10 +185,41 @@ function Form() {
     const nuevasFilas = filas.filter((f) => f !== fila);
     setFilas(nuevasFilas);
   };
-  
+
+
+  const calcularTotalHoras = () => {
+    let totalHoras = 0;
+
+    // Recorre timeRecord y realiza las restas y sumas secuenciales
+    for (let i = 0; i < timeRecord.length; i += 2) {
+      const horaInicio = parseFloat(timeRecord[i]?.value || 0);
+      const horaFin = parseFloat(timeRecord[i + 1]?.value || 0);
+
+      // Realiza la resta y suma al total, aplicando Math.abs() para obtener el valor absoluto
+      totalHoras += Math.abs(horaInicio - horaFin);
+    }
+
+    // Obtén la cantidad seleccionada por el usuario desde el elemento select
+    const jornadaSelect = document.getElementsByName('jornada')[0];
+    const cantidadSeleccionada = jornadaSelect instanceof HTMLSelectElement ? parseInt(jornadaSelect.value, 10) : 0;
+
+    // Compara el total de horas con la cantidad seleccionada
+    if (totalHoras < cantidadSeleccionada) {
+      const horasFaltantes = cantidadSeleccionada - totalHoras;
+      alert(`Tienes  ${totalHoras}  Te faltan ${horasFaltantes} horas para completar las ${cantidadSeleccionada} horas seleccionadas.`);
+    } else if (totalHoras > cantidadSeleccionada) {
+      const horasExtras = totalHoras - cantidadSeleccionada;
+      alert(`Tienes  ${totalHoras}  Te has pasado ${horasExtras} horas de las ${cantidadSeleccionada} horas seleccionadas.`);
+    } else {
+      alert(`Tienes  ${totalHoras}  Has completado las ${cantidadSeleccionada} horas seleccionadas.`);
+    }
+
+    return totalHoras; // Puedes decidir si necesitas devolver el total de horas para otros propósitos
+  };
+
 
   return (
-    <div className="formulario">
+    <div className="formulario" style={{ width: '1500px' }}>
       <h3 className="declaracion-title" style={{ color: 'black' }}>
         DECLARACIÓN JURADA DE HORARIO Y JORNADA DE TRABAJO
       </h3>
@@ -305,7 +338,7 @@ function Form() {
       </h2>
       <br />
       <h3 style={{ color: 'black' }}>UNIVERSIDAD DE COSTA RICA (sea como docente y/o administrativo)</h3>
-      <table className="tabla">
+      <table className="tabla" style={{ width: '1500px' }}>
         <thead>
           <tr>
             <th rowSpan={2} className="header-cell" >
@@ -397,10 +430,10 @@ function Form() {
             </td>
             <td className="main-inputs">
               <select name="jornada" className="jornada-inputs">
-                <option value="1">1/8</option>
-                <option value="6">1/2</option>
-                <option value="2">1/4</option>
-                <option value="8">1TC</option>
+                <option value="10">1/8</option>
+                <option value="20">1/2</option>
+                <option value="30">1/4</option>
+                <option value="40">1TC</option>
               </select>
             </td>
             <td className="date-picker" colSpan={3}>
@@ -418,7 +451,7 @@ function Form() {
               </table>
             </td>
           </tr>
-         
+
           <tr>
 
             <th className="header-cell">monday</th>
@@ -428,1931 +461,534 @@ function Form() {
             <th className="header-cell">friday</th>
             <th className="header-cell">Sábado</th>
           </tr>
-           
-              {filas.map((fila) => (
-                <tr key={fila} >
 
-                  <td className="separator">
-                    <table>
-                      <thead>
-                        <tr>
-                          <td>
-                            <select
-                              id="monday-mañana-0"
-                              name="monday_de_1"
-                              className="time-picker"
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Desde:
-                              </option>
+          {filas.map((fila) => (
+            <tr key={fila} >
 
-                              {MorningOptions.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td>
-                            <select
-                              id="monday-mañana-1"
-                              name="monday_de_1"
-                              className="time-picker"
-                              disabled={!enableSecondSelect[1]}
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Hasta:
-                              </option>
-                              {MondayOptionsM.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <select
-                              id="monday-tarde-2"
-                              name="monday_de_2"
-                              className="time-picker"
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Desde:
-                              </option>
+              <td className="separator">
+                <table>
+                  <thead>
+                    <tr>
+                      <td>
+                        <select
+                          id="monday-mañana-0"
+                          name="monday_de_1"
+                          className="time-picker"
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Desde:
+                          </option>
 
-                              {AfternoonOptions.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td>
-                            <select
-                              id="monday-mañana-3"
-                              name="monday_de_3"
-                              className="time-picker"
-                              disabled={!enableSecondSelect[3]}
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Hasta:
-                              </option>
-                              {MondayOptionsT.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                      </thead>
-                    </table>
-                  </td>
+                          {MorningOptions.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          id="monday-mañana-1"
+                          name="monday_de_1"
+                          className="time-picker"
+                          disabled={!enableSecondSelect[1]}
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Hasta:
+                          </option>
+                          {MondayOptionsM.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <select
+                          id="monday-tarde-2"
+                          name="monday_de_2"
+                          className="time-picker"
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Desde:
+                          </option>
 
-                  <td className="separator">
-                    <table>
-                      <thead>
-                        <tr>
-                          <td>
-                            <select
-                              id="tuesday-mañana-4"
-                              name="tuesday_de_4"
-                              className="time-picker"
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Desde:
-                              </option>
+                          {AfternoonOptions.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          id="monday-mañana-3"
+                          name="monday_de_3"
+                          className="time-picker"
+                          disabled={!enableSecondSelect[3]}
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Hasta:
+                          </option>
+                          {MondayOptionsT.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                  </thead>
+                </table>
+              </td>
 
-                              {MorningOptions.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td>
-                            <select
-                              id="tuesday-mañana-5"
-                              name="tuesday_de_5"
-                              className="time-picker"
-                              disabled={!enableSecondSelect[5]}
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Hasta:
-                              </option>
-                              {TuesdayOptionsM.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <select
-                              id="tuesday-tarde-6"
-                              name="tuesday_de_6"
-                              className="time-picker"
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Desde:
-                              </option>
+              <td className="separator">
+                <table>
+                  <thead>
+                    <tr>
+                      <td>
+                        <select
+                          id="tuesday-mañana-4"
+                          name="tuesday_de_4"
+                          className="time-picker"
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Desde:
+                          </option>
 
-                              {AfternoonOptions.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td>
-                            <select
-                              id="tuesday-tarde-7"
-                              name="tuesday_de_7"
-                              className="time-picker"
-                              disabled={!enableSecondSelect[7]}
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Hasta:
-                              </option>
-                              {TuesdayOptionsT.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                      </thead>
-                    </table>
-                  </td>
+                          {MorningOptions.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          id="tuesday-mañana-5"
+                          name="tuesday_de_5"
+                          className="time-picker"
+                          disabled={!enableSecondSelect[5]}
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Hasta:
+                          </option>
+                          {TuesdayOptionsM.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <select
+                          id="tuesday-tarde-6"
+                          name="tuesday_de_6"
+                          className="time-picker"
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Desde:
+                          </option>
 
-                  <td className="separator">
-                    <table>
-                      <thead>
-                        <tr>
-                          <td>
-                            <select
-                              id="wednesday-mañana-8"
-                              name="wednesday_de_8"
-                              className="time-picker"
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Desde:
-                              </option>
+                          {AfternoonOptions.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          id="tuesday-tarde-7"
+                          name="tuesday_de_7"
+                          className="time-picker"
+                          disabled={!enableSecondSelect[7]}
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Hasta:
+                          </option>
+                          {TuesdayOptionsT.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                  </thead>
+                </table>
+              </td>
 
-                              {MorningOptions.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td>
-                            <select
-                              id="wednesday-mañana-9"
-                              name="wednesday_de_9"
-                              className="time-picker"
-                              disabled={!enableSecondSelect[9]}
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Hasta:
-                              </option>
-                              {WednesdayOptionsM.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <select
-                              id="wednesday-tarde-10"
-                              name="wednesday_de_10"
-                              className="time-picker"
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Desde:
-                              </option>
+              <td className="separator">
+                <table>
+                  <thead>
+                    <tr>
+                      <td>
+                        <select
+                          id="wednesday-mañana-8"
+                          name="wednesday_de_8"
+                          className="time-picker"
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Desde:
+                          </option>
 
-                              {AfternoonOptions.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td>
-                            <select
-                              id="wednesday-tarde-11"
-                              name="wednesday_de_11"
-                              className="time-picker"
-                              disabled={!enableSecondSelect[11]}
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Hasta:
-                              </option>
-                              {WednesdayOptionsT.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                      </thead>
-                    </table>
-                  </td>
+                          {MorningOptions.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          id="wednesday-mañana-9"
+                          name="wednesday_de_9"
+                          className="time-picker"
+                          disabled={!enableSecondSelect[9]}
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Hasta:
+                          </option>
+                          {WednesdayOptionsM.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <select
+                          id="wednesday-tarde-10"
+                          name="wednesday_de_10"
+                          className="time-picker"
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Desde:
+                          </option>
 
-                  <td className="separator">
-                    <table>
-                      <thead>
-                        <tr>
-                          <td>
-                            <select
-                              id="thursday-mañana-12"
-                              name="thursday_de_12"
-                              className="time-picker"
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Desde:
-                              </option>
+                          {AfternoonOptions.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          id="wednesday-tarde-11"
+                          name="wednesday_de_11"
+                          className="time-picker"
+                          disabled={!enableSecondSelect[11]}
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Hasta:
+                          </option>
+                          {WednesdayOptionsT.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                  </thead>
+                </table>
+              </td>
 
-                              {MorningOptions.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td>
-                            <select
-                              id="thursday-mañana-13"
-                              name="thursday_de_13"
-                              className="time-picker"
-                              disabled={!enableSecondSelect[13]}
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Hasta:
-                              </option>
-                              {ThursdayOptionsM.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <select
-                              id="thursday-tarde-14"
-                              name="thursday_de_14"
-                              className="time-picker"
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Desde:
-                              </option>
+              <td className="separator">
+                <table>
+                  <thead>
+                    <tr>
+                      <td>
+                        <select
+                          id="thursday-mañana-12"
+                          name="thursday_de_12"
+                          className="time-picker"
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Desde:
+                          </option>
 
-                              {AfternoonOptions.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td>
-                            <select
-                              id="thursday-tarde-15"
-                              name="thursday_de_15"
-                              className="time-picker"
-                              disabled={!enableSecondSelect[15]}
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Hasta:
-                              </option>
-                              {ThursdayOptionsT.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                      </thead>
-                    </table>
-                  </td>
+                          {MorningOptions.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          id="thursday-mañana-13"
+                          name="thursday_de_13"
+                          className="time-picker"
+                          disabled={!enableSecondSelect[13]}
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Hasta:
+                          </option>
+                          {ThursdayOptionsM.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <select
+                          id="thursday-tarde-14"
+                          name="thursday_de_14"
+                          className="time-picker"
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Desde:
+                          </option>
 
-                  <td className="separator">
-                    <table>
-                      <thead>
-                        <tr>
-                          <td>
-                            <select
-                              id="friday-mañana-16"
-                              name="friday_de_16"
-                              className="time-picker"
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Desde:
-                              </option>
+                          {AfternoonOptions.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          id="thursday-tarde-15"
+                          name="thursday_de_15"
+                          className="time-picker"
+                          disabled={!enableSecondSelect[15]}
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Hasta:
+                          </option>
+                          {ThursdayOptionsT.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                  </thead>
+                </table>
+              </td>
 
-                              {MorningOptions.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td>
-                            <select
-                              id="friday-mañana-17"
-                              name="friday_de_17"
-                              className="time-picker"
-                              disabled={!enableSecondSelect[17]}
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Hasta:
-                              </option>
-                              {FridayOptionsM.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <select
-                              id="friday-tarde-18"
-                              name="friday_de_18"
-                              className="time-picker"
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Desde:
-                              </option>
+              <td className="separator">
+                <table>
+                  <thead>
+                    <tr>
+                      <td>
+                        <select
+                          id="friday-mañana-16"
+                          name="friday_de_16"
+                          className="time-picker"
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Desde:
+                          </option>
 
-                              {AfternoonOptions.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td>
-                            <select
-                              id="friday-tarde-19"
-                              name="friday_de_19"
-                              className="time-picker"
-                              disabled={!enableSecondSelect[19]}
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Hasta:
-                              </option>
-                              {FridayOptionsT.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                      </thead>
-                    </table>
-                  </td>
+                          {MorningOptions.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          id="friday-mañana-17"
+                          name="friday_de_17"
+                          className="time-picker"
+                          disabled={!enableSecondSelect[17]}
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Hasta:
+                          </option>
+                          {FridayOptionsM.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <select
+                          id="friday-tarde-18"
+                          name="friday_de_18"
+                          className="time-picker"
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Desde:
+                          </option>
 
-                  <td className="separator">
-                    <table>
-                      <thead>
-                        <tr>
-                          <td>
-                            <select
-                              id="saturday-mañana-20"
-                              name="saturday_de_20"
-                              className="time-picker"
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Desde:
-                              </option>
+                          {AfternoonOptions.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          id="friday-tarde-19"
+                          name="friday_de_19"
+                          className="time-picker"
+                          disabled={!enableSecondSelect[19]}
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Hasta:
+                          </option>
+                          {FridayOptionsT.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                  </thead>
+                </table>
+              </td>
 
-                              {MorningOptions.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td>
-                            <select
-                              id="saturday-mañana-21"
-                              name="saturday_de_21"
-                              className="time-picker"
-                              disabled={!enableSecondSelect[21]}
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Hasta:
-                              </option>
-                              {SaturdayOptionsM.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <select
-                              id="saturday-tarde-22"
-                              name="saturday_de_22"
-                              className="time-picker"
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Desde:
-                              </option>
+              <td className="separator">
+                <table>
+                  <thead>
+                    <tr>
+                      <td>
+                        <select
+                          id="saturday-mañana-20"
+                          name="saturday_de_20"
+                          className="time-picker"
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Desde:
+                          </option>
 
-                              {AfternoonOptions.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                          <td>
-                            <select
-                              id="saturday-tarde-23"
-                              name="saturday_de_23"
-                              className="time-picker"
-                              disabled={!enableSecondSelect[23]}
-                              onChange={handleHoraChange}
-                            >
-                              <option disabled selected>
-                                Hasta:
-                              </option>
-                              {SaturdayOptionsT.map((opcion) => (
-                                <option key={opcion.value} value={opcion.value}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                      </thead>
-                    </table>
-                  </td>
-                  <button onClick={() => eliminarFila(fila)}>Eliminar</button>
-                </tr>
-                
-              ))}
-            
-          
+                          {MorningOptions.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          id="saturday-mañana-21"
+                          name="saturday_de_21"
+                          className="time-picker"
+                          disabled={!enableSecondSelect[21]}
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Hasta:
+                          </option>
+                          {SaturdayOptionsM.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <select
+                          id="saturday-tarde-22"
+                          name="saturday_de_22"
+                          className="time-picker"
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Desde:
+                          </option>
+
+                          {AfternoonOptions.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          id="saturday-tarde-23"
+                          name="saturday_de_23"
+                          className="time-picker"
+                          disabled={!enableSecondSelect[23]}
+                          onChange={handleHoraChange}
+                        >
+                          <option disabled selected>
+                            Hasta:
+                          </option>
+                          {SaturdayOptionsT.map((opcion) => (
+                            <option key={opcion.value} value={opcion.value}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                  </thead>
+                </table>
+              </td>
+              <button
+                style={{
+                  position: 'absolute',
+
+                }}
+                onClick={() => eliminarFila(fila)}
+              >
+                Eliminar
+              </button>
+            </tr>
+
+          ))}
+
+
           <button onClick={agregarFila}>Agregar Fila</button>
-          
+          <button onClick={() => alert(`Cantidad total de horas: ${calcularTotalHoras()}`)}>
+            Calcular Total de Horas
+          </button>
+
         </thead>
 
 
         <tbody></tbody>
       </table>
       <br />
-      <h3 style={{ color: 'black' }}>OTRAS INSTITUCIONES PÚBLICAS, PRIVADAS Y FUNDACIONES</h3>
-      <table className="tabla2">
-        <thead>
-          <tr>
-            <th rowSpan={2} className="header-cell">
-              Lugar de Trabajo
-            </th>
-            <th rowSpan={2} className="header-cell">
-              Cargo <br /> Categoría
-            </th>
-            <th rowSpan={2} className="header-cell">
-              Jornada <br /> de Trabajo
-            </th>
-            <th className="header-cell" id="vigencia-head">
-              Vigencia del <br />
-              Nombramiento
-            </th>
-            <th className="header-cell">monday</th>
-            <th className="header-cell">tuesday</th>
-            <th className="header-cell">Miércoles</th>
-            <th className="header-cell">thursday</th>
-            <th className="header-cell">friday</th>
-            <th className="header-cell">Sábado</th>
-          </tr>
-          <tr>
-            <th>
-              <table className="sub-headers">
-                <thead>
-                  <tr>
-                    <td className="range">
-                      <p>Desde:</p>
-                    </td>
-                    <td className="range">
-                      <p>Hasta:</p>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </th>
 
-            <th>
-              <table className="sub-headers">
-                <thead>
-                  <tr>
-                    <td className="range">
-                      <p>De:</p>
-                    </td>
-                    <td className="range">
-                      <p>A:</p>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </th>
-            <th>
-              <table className="sub-headers">
-                <thead>
-                  <tr>
-                    <td className="range">
-                      <p>De:</p>
-                    </td>
-                    <td className="range">
-                      <p>A:</p>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </th>
-            <th>
-              <table className="sub-headers">
-                <thead>
-                  <tr>
-                    <td className="range">
-                      <p>De:</p>
-                    </td>
-                    <td className="range">
-                      <p>A:</p>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </th>
-            <th>
-              <table className="sub-headers">
-                <thead>
-                  <tr>
-                    <td className="range">
-                      <p>De:</p>
-                    </td>
-                    <td className="range">
-                      <p>A:</p>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </th>
-            <th>
-              <table className="sub-headers">
-                <thead>
-                  <tr>
-                    <td className="range">
-                      <p>De:</p>
-                    </td>
-                    <td className="range">
-                      <p>A:</p>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </th>
-            <th>
-              <table className="sub-headers">
-                <thead>
-                  <tr>
-                    <td className="range">
-                      <p>De:</p>
-                    </td>
-                    <td className="range">
-                      <p>A:</p>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <select name="sede">
-                <option value="Sede Regional de Occidente">
-                  Sede de Occidente
-                </option>
-                <option value="Sede Regional del Atlántico">
-                  Sede del Atlántico
-                </option>
-                <option value="Sede Regional de Guanacaste">
-                  Sede de Guanacaste
-                </option>
-                <option value="Sede Regional del Caribe">
-                  Sede del Caribe
-                </option>
-                <option value="Sede Regional del Pacífico">
-                  Sede del Pacífico
-                </option>
-                <option value="Sede Regional del Sur">Sede del Sur</option>
-                <option value="Sede Interuniversitaria de Alajuela">
-                  Sede de Alajuela
-                </option>
-              </select>
-            </td>
-            <td>
-              <select name="cargo" id="cargo">
-                <option value="">Opción de cargo 1</option>
-                <option value="">Opción de cargo 2</option>
-                <option value="">Opción de cargo 3</option>
-                <option value="">Opción de cargo 4</option>
-              </select>
-            </td>
-            <td>
-              <select name="jornada">
-                <option value="completa">1/4</option>
-                <option value="meday">1/4</option>
-                <option value="personalizada">1/4</option>
-              </select>
-            </td>
-            <td className="date-picker">
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <input type="date" placeholder="desde" className="date" />
-                    </td>
-                    <td>
-                      <input type="date" placeholder="hasta" className="date" />
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
 
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <select name="sede">
-                <option value="Sede Regional de Occidente">
-                  Sede de Occidente
-                </option>
-                <option value="Sede Regional del Atlántico">
-                  Sede del Atlántico
-                </option>
-                <option value="Sede Regional de Guanacaste">
-                  Sede de Guanacaste
-                </option>
-                <option value="Sede Regional del Caribe">
-                  Sede del Caribe
-                </option>
-                <option value="Sede Regional del Pacífico">
-                  Sede del Pacífico
-                </option>
-                <option value="Sede Regional del Sur">Sede del Sur</option>
-                <option value="Sede Interuniversitaria de Alajuela">
-                  Sede de Alajuela
-                </option>
-              </select>
-            </td>
-            <td>
-              <select name="cargo" id="cargo">
-                <option value="">Opción de cargo 1</option>
-                <option value="">Opción de cargo 2</option>
-                <option value="">Opción de cargo 3</option>
-                <option value="">Opción de cargo 4</option>
-              </select>
-            </td>
-            <td>
-              <select name="jornada">
-                <option value="completa">1/4</option>
-                <option value="meday">1/4</option>
-                <option value="personalizada">1/4</option>
-              </select>
-            </td>
-            <td className="date-picker">
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <input type="date" placeholder="desde" className="date" />
-                    </td>
-                    <td>
-                      <input type="date" placeholder="hasta" className="date" />
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <select name="sede">
-                <option value="Sede Regional de Occidente">
-                  Sede de Occidente
-                </option>
-                <option value="Sede Regional del Atlántico">
-                  Sede del Atlántico
-                </option>
-                <option value="Sede Regional de Guanacaste">
-                  Sede de Guanacaste
-                </option>
-                <option value="Sede Regional del Caribe">
-                  Sede del Caribe
-                </option>
-                <option value="Sede Regional del Pacífico">
-                  Sede del Pacífico
-                </option>
-                <option value="Sede Regional del Sur">Sede del Sur</option>
-                <option value="Sede Interuniversitaria de Alajuela">
-                  Sede de Alajuela
-                </option>
-              </select>
-            </td>
-            <td>
-              <select name="cargo" id="cargo">
-                <option value="">Opción de cargo 1</option>
-                <option value="">Opción de cargo 2</option>
-                <option value="">Opción de cargo 3</option>
-                <option value="">Opción de cargo 4</option>
-              </select>
-            </td>
-            <td>
-              <select name="jornada">
-                <option value="completa">1/4</option>
-                <option value="meday">1/4</option>
-                <option value="personalizada">1/4</option>
-              </select>
-            </td>
-            <td className="date-picker">
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <input type="date" placeholder="desde" className="date" />
-                    </td>
-                    <td>
-                      <input type="date" placeholder="hasta" className="date" />
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-            <td>
-              <table>
-                <thead>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="8">8:00 AM</option>
-                        <option value="8.5">8:30 AM</option>
-                        <option value="9">9:00 AM</option>
-                        <option value="9.5">9:30 AM</option>
-                        <option value="10">10:00 AM</option>
-                        <option value="10.5">10:30 AM</option>
-                        <option value="11">11:00 AM</option>
-                        <option value="11.5">11:30 AM</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select name="monday_de" className="time-picker">
-                        <option value="12">12:00 PM</option>
-                        <option value="12.5">12:30 PM</option>
-                        <option value="13">13:00 PM</option>
-                        <option value="13.5">13:30 PM</option>
-                        <option value="14">14:00 PM</option>
-                        <option value="14.5">14:30 PM</option>
-                        <option value="15">15:00 PM</option>
-                        <option value="15.5">15:30 PM</option>
-                        <option value="16">16:00 PM</option>
-                        <option value="16.5">16:30 PM</option>
-                      </select>
-                    </td>
-                  </tr>
-                </thead>
-              </table>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   );
 }
